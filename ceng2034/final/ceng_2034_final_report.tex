@@ -1,0 +1,107 @@
+\documentclass[onecolumn]{article}
+%\usepackage{url}
+%\usepackage{algorithmic}
+\usepackage[a4paper]{geometry}
+\usepackage{datetime}
+\usepackage[margin=2em, font=small,labelfont=it]{caption}
+\usepackage{graphicx}
+\usepackage{mathpazo} % use palatino
+\usepackage[scaled]{helvet} % helvetica
+\usepackage{microtype}
+\usepackage{amsmath}
+\usepackage{subfigure}
+\usepackage{float}
+% Letterspacing macros
+\newcommand{\spacecaps}[1]{\textls[200]{\MakeUppercase{#1}}}
+\newcommand{\spacesc}[1]{\textls[50]{\textsc{\MakeLowercase{#1}}}}
+
+\title{\spacecaps{Assignment Report 2: Implementation of Fork and Multiprocessing Synchronization}\\ \normalsize \spacesc{CENG2034, Operating Systems} }
+
+\author{Ümit Kadiroğlu\\umitkadiroglu@posta.mu.edu.tr}
+%\date{\today\\\currenttime}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The purpose of this assignment is to get used to with child and parent processes, avoiding the orphan process situation with os.wait(), and also dealing with some duplicate checking jobs with hashlib MD5 and multiprocessing. In addition requests and uuid libraries was used. Also an interesting result was encountered in the end
+\end{abstract}
+\section{Introduction}
+
+This assignment aims to practice the using of\textbf{ fork()} system call, to know what fork() creates, to find how the orphan process situation can be prevented and the methods of detecting the duplicate files. This homework was done by using Linux Mint 19.3 Tricia, Python 3.6.9 and \textbf{os}, \textbf{requests}, \textbf{uuid}, \textbf{hashlib}, \textbf{multiprocessing} libraries.
+
+\textit{Github}: \textbf{https://github.com/umitkadiroglu.}
+
+
+\section{Tasks}
+There were 4 tasks in total. The fourth task was a bit more challenging than the others so it contains some subsections.
+
+\subsection{Task 1 ("Child Process")}
+I started this task by importing \textbf{os} library. After creating the process, I put a condition to detect the child process and then used \textbf{getpid()} to to get its PID.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=10cm]{fig/ss01.PNG}
+\caption{Creating a child process}
+\end{figure}
+    
+\subsection{Task 2 ("Downloading the files")}
+In this task, I imported \textbf{requests} and \textbf{uuid} libraries for the function called "download file" whose job is to download files. I made an array called "url" for URL's to download. Used the function under the child process and gave names to the files. Also added \textbf{os.exit()} for other tasks to not have problems.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=14cm]{fig/ss02.PNG}
+\caption{Downloading files in child process}
+\end{figure}
+
+\subsection{Task 3 ("Orphan Process")}
+This time the problem was avoiding the orphan process situation. I added \textbf{wait()} for this, after the child but before the parent because I wanted my parent process to wait child to complete. 
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=10cm]{fig/ss03.PNG}
+\caption{Using wait() for avoiding orphan process situation}
+\end{figure}
+
+\subsection{Task 4.1 ("First Attempts")}
+After I decided to use \textbf{hashlib -md5} for this task, I started by importing hashlib and multiprocessing libraries. Firstly, I created an array called "files" to keep file names and created an empty array for hash codes. The mechanism of the "getFileHash" function was getting a file as input, get its hash code and assign it to x, checking whether the checksum array contains this hash code and then append this hash to the checksum array.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=14cm]{fig/ss04.PNG}
+\caption{The failed function}
+\end{figure}
+
+This made sense on paper but the result was not. It was working without multiprocessing. I assume that the reason it didn't work with multiprocessing was the\textbf{ 2 cores} I have working with their own memories and what is in one's array is not in the other's. So, there were things that had to change.
+
+\subsection{Task 4.2 ("Change of plan")}
+This time the checksum array was not empty. I filled that array with hash codes before comparing. The mechanism of the function changed to get its hash code to x, then append it to the array. This way, if there is not a duplicate, there will be 2 same hash codes; but if there is a duplicate, there will be 3. So I put a condition to check the number of this and printed positive if it is bigger than 2.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=14cm]{fig/ss05.PNG}
+\caption{Changing the array and the function}
+\end{figure}
+
+
+\section{Results}
+The results were quite surprising. Executing with multiprocessing had \textbf{increased the time by approximately 0.2 seconds.} 
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=9cm]{fig/ss06.PNG}
+\caption{Output with multiprocessing}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=9cm]{fig/ss07.PNG}
+\caption{Output without multiprocessing}
+\end{figure}
+
+
+\section{Conclusion}
+As a result, I learned that multiprocessing does not always speed-up the jobs, as seen at figure 6 and 7. The expected result was different than this one.  Orphan process situation is dangerous and can be solved with os.wait() as seen at figure 3. The important thing is the place of wait(). I put it just after the child and before the parent process so it waits child process to complete and then executes the parent. Also, the hashlib library is quite useful and MD5 is calculated based on file contents.
+\end{document}
+

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Collaborative Code Editor</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
+</head>
+<body>
+  <ul class="pages">
+    <li class="chat page">
+      <div class="chatArea">
+        <ul class="messages"></ul>
+      </div>
+    <div class="editor-holder">
+      <ul class="toolbar">
+        <li><a href="#" id="indent" title="Toggle tabs or spaces"><i class="fa fa-indent"></i></a></li>
+        <li><a href="#" id="fullscreen" title="Toggle fullscreen mode"><i class="fa fa-expand"></i></a></li>
+      </ul>
+      <div class="scroller">
+        <textarea class="editor allow-tabs" id="editor"></textarea>
+        <pre><code class="syntax-highight html"></code></pre>
+      </div>
+    </div>
+    </li>
+    <li class="login page">
+      <div class="form">
+        <h1 style="color: white; font-size: 300%;">Collaborative Code Editor</h1>
+        <h3 class="title">What's your nickname?</h3>
+        <input class="usernameInput" type="text" maxlength="14" />
+        <h6 style="color: white;">Emre Ertürk 170709007 - Murat Doğan 170709033 - Ümit Kadiroğlu 170709002</h6>
+        <h5><a target="_blank" rel="noopener noreferrer" href="https://github.com/umitkadiroglu/collaborative-code-editor" style="color: white;"><i class="fab fa-github"></i> GitHub</a></h5>
+      </div>
+    </li>
+  </ul>
+
+  <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+  <script src="https://use.fontawesome.com/b2c0f76220.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.5.0/highlight.min.js"></script>
+  <script src="https://raw.githubusercontent.com/emmetio/textarea/master/emmet.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/main.js"></script>
+  <script src="codeeditor.js"></script>
+</body>
+</html>
